@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.PremierLeague.model.Adiacenza;
 import it.polito.tdp.PremierLeague.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,7 +41,7 @@ public class FXMLController {
     private TextField txtMinuti; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbMese"
-    private ComboBox<?> cmbMese; // Value injected by FXMLLoader
+    private ComboBox<Integer> cmbMese; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbM1"
     private ComboBox<?> cmbM1; // Value injected by FXMLLoader
@@ -53,10 +55,33 @@ public class FXMLController {
     @FXML
     void doConnessioneMassima(ActionEvent event) {
     	
+    	txtResult.clear();
+    	txtResult.appendText("Coppie con connessione massima: \n\n");
+    	
+    	for(Adiacenza a:model.getConnessioneMax())
+    	{
+    		txtResult.appendText(a.getM1() + " - " + a.getM2() + " (" + a.getPeso() + ")");
+    	}
+    	
     }
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
+    	
+    	txtResult.clear();
+    	try
+    	{
+    		int minG = Integer.parseInt(this.txtMinuti.getText());
+    		
+    		if(minG>=0 && minG<=90)
+    		{
+    			txtResult.appendText(model.creaGrafo(this.cmbMese.getValue(), minG));
+    		}
+    	}catch(NumberFormatException e)
+    	{
+    		txtResult.appendText("Inserisci un numero");
+    	}
+    	this.btnConnessioneMassima.setDisable(false);
     	
     }
 
@@ -79,6 +104,13 @@ public class FXMLController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	
+    	for(int i=0; i<=12; i++)
+    	{
+    		this.cmbMese.getItems().add(i);
+    	}
+    	
+    	this.btnConnessioneMassima.setDisable(true);
   
     }
     
