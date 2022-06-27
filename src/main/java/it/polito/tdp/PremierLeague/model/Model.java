@@ -93,7 +93,7 @@ public class Model {
 				
 				for(Match v:Graphs.neighborListOf(this.grafo, parziale.get(parziale.size()-1))) //scorro sui vicini dell'ultimo nodo sulla lista
 				{
-					if(!parziale.contains(v))
+					if(!parziale.contains(v) && (v.teamHomeID != parziale.get(parziale.size()-1).getTeamHomeID() && v.teamAwayID != parziale.get(parziale.size()-1).teamAwayID))
 					{
 						parziale.add(v);
 						cercaRicorsiva(parziale, dest);

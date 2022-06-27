@@ -82,7 +82,7 @@ public class FXMLController {
     		txtResult.appendText("Inserisci un numero");
     	}
     	this.btnConnessioneMassima.setDisable(false);
-    	
+    	this.btnCollegamento.setDisable(false);
     }
 
     @FXML
@@ -111,6 +111,7 @@ public class FXMLController {
     	}
     	
     	this.btnConnessioneMassima.setDisable(true);
+    	this.btnCollegamento.setDisable(true);
   
     }
     
