@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.PremierLeague.model.Adiacenza;
+import it.polito.tdp.PremierLeague.model.Match;
 import it.polito.tdp.PremierLeague.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,10 +45,10 @@ public class FXMLController {
     private ComboBox<Integer> cmbMese; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbM1"
-    private ComboBox<?> cmbM1; // Value injected by FXMLLoader
+    private ComboBox<Match> cmbM1; // Value injected by FXMLLoader
 
     @FXML // fx:id="cmbM2"
-    private ComboBox<?> cmbM2; // Value injected by FXMLLoader
+    private ComboBox<Match> cmbM2; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtResult"
     private TextArea txtResult; // Value injected by FXMLLoader
@@ -76,17 +77,31 @@ public class FXMLController {
     		if(minG>=0 && minG<=90)
     		{
     			txtResult.appendText(model.creaGrafo(this.cmbMese.getValue(), minG));
+    			this.btnConnessioneMassima.setDisable(false);
+    			this.btnCollegamento.setDisable(false);
+    			this.cmbM1.getItems().addAll(model.getVertici());
+    			this.cmbM2.getItems().addAll(model.getVertici());
     		}
     	}catch(NumberFormatException e)
     	{
     		txtResult.appendText("Inserisci un numero");
     	}
-    	this.btnConnessioneMassima.setDisable(false);
-    	this.btnCollegamento.setDisable(false);
+    	
     }
 
     @FXML
     void doCollegamento(ActionEvent event) {
+    	
+    	this.txtResult.clear();
+    	if(this.cmbM1.getValue() != null && this.cmbM2.getValue() != null)
+    	{
+    		List<Match> migliore = model.calcolaPercorso(cmbM1.getValue(), cmbM2.getValue());
+    		this.txtResult.appendText("Percorso migliore (peso = " + model.getPesoMigliore() + "):\n");
+    		for(Match m:migliore)
+    		{
+    			this.txtResult.appendText(m.toString() + "\n");
+    		}
+    	}
     	
     }
 

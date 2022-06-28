@@ -22,6 +22,7 @@ public class Model {
 	Map<Integer, Match> idMapVERTICI;
 	List<Adiacenza> archi;
 	List<Match> migliore;
+	int pesoMigliore;
 	
 	public Model()
 	{
@@ -75,6 +76,7 @@ public class Model {
 		List<Match> parziale = new LinkedList<>();
 		parziale.add(sorg);
 		cercaRicorsiva(parziale, dest);
+		this.pesoMigliore = this.pesoTot(migliore);
 		return migliore;
 	}
 
@@ -93,11 +95,16 @@ public class Model {
 				
 				for(Match v:Graphs.neighborListOf(this.grafo, parziale.get(parziale.size()-1))) //scorro sui vicini dell'ultimo nodo sulla lista
 				{
-					if(!parziale.contains(v) && (v.teamHomeID != parziale.get(parziale.size()-1).getTeamHomeID() && v.teamAwayID != parziale.get(parziale.size()-1).teamAwayID))
+					if(!parziale.contains(v))
 					{
-						parziale.add(v);
-						cercaRicorsiva(parziale, dest);
-						parziale.remove(parziale.size()-1);
+						if((v.teamHomeID != parziale.get(parziale.size()-1).getTeamHomeID() && v.teamAwayID != parziale.get(parziale.size()-1).teamAwayID)
+							||  (v.teamHomeID != parziale.get(parziale.size()-1).getTeamAwayID() && v.teamAwayID != parziale.get(parziale.size()-1).teamHomeID))
+						{
+							parziale.add(v);
+							cercaRicorsiva(parziale, dest);
+							parziale.remove(parziale.size()-1);
+						}
+						
 					}
 					
 				}
@@ -115,5 +122,15 @@ public class Model {
 		System.out.println(peso);
 		return peso;
 	}
+
+	public int getPesoMigliore() {
+		return pesoMigliore;
+	}
+
+	public List<Match> getVertici() {
+		return vertici;
+	}
+	
+	
 	
 }
